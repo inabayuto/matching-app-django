@@ -1,0 +1,6 @@
+*/.env
+.env
+src/secrets/.env.dev
+src/secrets/
+base/migrations/
+base/__pycache__/
