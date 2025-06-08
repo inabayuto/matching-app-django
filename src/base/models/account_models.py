@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager,  AbstractBaseUser,  PermissionsMixin
 import uuid
+from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class UserManager(BaseUserManager):
     """
@@ -55,3 +57,36 @@ class UserManager(BaseUserManager):
         # データベースに保存
         user.save(using=self._db)
         return user
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(max_length=255, unique=True)
+    username = models.CharField(max_length=255, unique=True)
+    is_active =  models.BooleanField(default=True)
+    is_staff =  models.BooleanField(default=True)
+
+    objects =  UserManager()
+
+    USERNAME_FIELD = 'email'
+
+    def __str__(self):
+        return self.email
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True, on_delete=models.CASCADE, related_name='profile')
+    is_kyc = models.BooleanField('本人確認', default=False)
+    nickname = models.CharField('ニックネーム', max_length=255)
+    created_at = models.DateTimeField('登録日時', auto_now_add=True)
+    updated_at = models.DateTimeField('更新日時', auto_now=True, blank=True, null=True)
+    age = models.PositiveBigIntegerField('年齢', validators=[MinValueValidator(18), MaxValueValidator(100)])
+    SEX = [
+        ('male', '男性'),
+        ('female', '女性'),
+    ]
+    sex = models.CharField('性別', max_length=10, choices=SEX)
+    introduction = models.TextField('自己紹介', blank=True, null=True)
+
+    def __str__(self):
+        return self.nickname
