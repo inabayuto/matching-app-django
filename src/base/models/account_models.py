@@ -3,6 +3,8 @@ from django.contrib.auth.models import BaseUserManager,  AbstractBaseUser,  Perm
 import uuid
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class UserManager(BaseUserManager):
     """
@@ -90,3 +92,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.nickname
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_profile_on_user_create(sender, instance=None, created=False, **kwargs):
+    """
+    Userモデルのインスタンスが作成された時（created=True）、
+    関連するProfileモデルのインスタンスも自動的に作成する。
+    """
+    if created:
+        Profile.objects.create(user=instance)

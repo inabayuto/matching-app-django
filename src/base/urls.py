@@ -15,7 +15,7 @@ router.register('dm-inbox', InboxListView, basename='dm-inbox')
 
 urlpatterns = [
     path('users/create/', CreateUserView.as_view(), name='users-create'),
-    path('users/<pk>', UserView.as_view(), name='users'),
-    path('users/profile/', MyProfileListView.as_view(), name='users-profile'),
+    path('users/<pk>/', UserView.as_view(), name='users'),
+    path('users/profile/<uuid:pk>/', MyProfileListView.as_view(), name='users-profile'),
     path('', include(router.urls)),
 ]

@@ -55,6 +55,3 @@ class ProfileViewSet(ModelViewSet):
 class MyProfileListView(RetrieveUpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-
-    def get_queryset(self):
-        return self.queryset.filter(user=self.request.user)
