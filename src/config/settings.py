@@ -134,3 +134,22 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = 'base.User'
+
+# stripe
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = env.int('EMAIL_PORT')
+DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
+
+STRIPE_ITEM_PRICE = env.str('STRIPE_ITEM_PRICE')
+STRIPE_API_SECRET_KEY = env.str('STRIPE_API_SECRET_KEY')
+
+# ユーザー有効化トークンの有効期限（日数）
+ACTIVATION_EXPIRED_DAYS = 1
+
+MY_URL = env.str('MY_URL', default='http://127.0.0.1:8000')
+
