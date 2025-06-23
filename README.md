@@ -151,3 +151,6 @@ python manage.py runserver 0.0.0.0:8000
 - `GET /api/users/<token_id>/payment/` - Stripe決済ページ
 - `GET /api/users/payment/cancel/` - 決済キャンセル
 - `GET /api/users/<activate_token>/activation/` - ユーザーアクティベーション
+
+### 参考
+- https://shinseidaiki.hatenablog.com/entry/2025/03/31/142837#%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E6%A7%8B%E6%88%90%E3%81%AB%E5%90%88%E3%82%8F%E3%81%9B%E3%81%A6%E7%A9%BA%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B
