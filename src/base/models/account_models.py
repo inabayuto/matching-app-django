@@ -63,34 +63,45 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField(max_length=255, unique=True)
-    username = models.CharField(max_length=255, unique=True)
-    is_active =  models.BooleanField(default=False)
-    is_staff =  models.BooleanField(default=False)
+    """
+    カスタムユーザーモデル。
+    AbstractBaseUserを継承し、Djangoの認証システムをカスタマイズ。
+    PermissionsMixinを継承し、権限管理をサポート。
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # ユーザーID
+    email = models.EmailField(max_length=255, unique=True) # メールアドレス
+    username = models.CharField(max_length=255, unique=True) # ユーザー名
+    is_active =  models.BooleanField(default=False) # ユーザーの有効化状態
+    is_staff =  models.BooleanField(default=False) # スタッフ権限
 
     objects =  UserManager()
 
     USERNAME_FIELD = 'email'
 
+    # ユーザーのメールアドレスを返す
     def __str__(self):
         return self.email
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True, on_delete=models.CASCADE, related_name='profile')
-    is_kyc = models.BooleanField('本人確認', default=False)
-    nickname = models.CharField('ニックネーム', max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField('登録日時', auto_now_add=True)
-    updated_at = models.DateTimeField('更新日時', auto_now=True, blank=True, null=True)
-    age = models.PositiveBigIntegerField('年齢', validators=[MinValueValidator(18), MaxValueValidator(100)], blank=True, null=True)
+    """
+    ユーザーのプロフィール情報を管理するモデル。
+    Userモデルと1対1の関係を持ち、ユーザーの詳細情報を保持。
+    """
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True, on_delete=models.CASCADE, related_name='profile') # ユーザーと1対1の関係を持つ
+    is_kyc = models.BooleanField('本人確認', default=False) # 本人確認の有無
+    nickname = models.CharField('ニックネーム', max_length=255, blank=True, null=True) # ニックネーム
+    created_at = models.DateTimeField('登録日時', auto_now_add=True) # 登録日時
+    updated_at = models.DateTimeField('更新日時', auto_now=True, blank=True, null=True) # 更新日時
+    age = models.PositiveBigIntegerField('年齢', validators=[MinValueValidator(18), MaxValueValidator(100)], blank=True, null=True) # 年齢
     SEX = [
         ('male', '男性'),
         ('female', '女性'),
     ]
-    sex = models.CharField('性別', max_length=10, choices=SEX, blank=True, null=True)
-    introduction = models.TextField('自己紹介', blank=True, null=True)
+    sex = models.CharField('性別', max_length=10, choices=SEX, blank=True, null=True) # 性別
+    introduction = models.TextField('自己紹介', blank=True, null=True) # 自己紹介
 
+    # ニックネームが存在する場合はニックネームを返し、存在しない場合はユーザー名を返す
     def __str__(self):
         return self.nickname if self.nickname else str(self.user)
 

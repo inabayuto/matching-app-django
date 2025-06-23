@@ -7,6 +7,9 @@ class ProfileInline(admin.StackedInline):
     can_delete = False
 
 class UserAdmin(BaseUserAdmin):
+    """
+    ユーザー管理画面の設定。
+    """
     ordering = ('id',)
     list_display = ('email', 'password')
     fieldsets = (

@@ -7,10 +7,17 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 
 
 class DirectMessageViewSet(ModelViewSet):
+    """
+    ダイレクトメッセージ情報取得用のビュー。
+    ダイレクトメッセージ情報を取得する。
+    """
     queryset = DM.objects.all()
     serializer_class = DirectMessageSerializer
 
     def get_queryset(self):
+        """
+        ダイレクトメッセージ情報を取得する。
+        """
         return self.queryset.filter(sender=self.request.user)
 
     def perform_create(self, serializer):
@@ -21,6 +28,10 @@ class DirectMessageViewSet(ModelViewSet):
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
     
 class InboxListView(ReadOnlyModelViewSet):
+    """
+    受信メッセージ一覧取得用のビュー。
+    受信メッセージ一覧を取得する。
+    """
     queryset = DM.objects.all()
     serializer_class = DirectMessageSerializer
 

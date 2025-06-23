@@ -23,11 +23,14 @@ class UserActivateTokensManager(models.Manager):
             return user
 
 class UserActivateTokens(models.Model):
+    """
+    ユーザー有効化トークンを管理するモデル。 
+    """
 
-    token_id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    activate_token = models.UUIDField(default=uuid.uuid4)
-    expired_at = models.DateTimeField()
+    token_id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False) # トークンID
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # ユーザー
+    activate_token = models.UUIDField(default=uuid.uuid4) # 有効化トークン
+    expired_at = models.DateTimeField() # 有効期限
 
     objects = UserActivateTokensManager()
 
@@ -36,6 +39,16 @@ class UserActivateTokens(models.Model):
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def publish_activate_token(sender, instance, **kwargs):
+    """
+    ユーザー有効化トークンを作成する。
+    Args:
+        sender: シグナルを送信するモデルのインスタンス
+        instance: シグナルを送信するモデルのインスタンス
+        **kwargs: シグナルを送信するモデルのキーワード引数
+
+    Returns:
+        None
+    """
     if not instance.is_active:
         user_activate_token = UserActivateTokens.objects.create(
             user=instance,

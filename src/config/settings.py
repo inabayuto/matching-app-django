@@ -26,10 +26,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'base', # 追記
-    'rest_framework', # 追記
-    'corsheaders', # 追記
-    'djoser', # 追記
+    'base', # 追記 アプリケーションの適用
+    'rest_framework', # 追記 パッケージの適用
+    'corsheaders', # 追記 パッケージの適用
+    'djoser', # 追記 パッケージの適用
 ]
 
 MIDDLEWARE = [
@@ -40,7 +40,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # 追記
+    'corsheaders.middleware.CorsMiddleware', # 追記 パッケージの適用
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -102,6 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
+# ロケーションの変更
 LANGUAGE_CODE = 'ja'
 
 TIME_ZONE = 'Asia/Tokyo'
@@ -117,8 +118,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 追記
 STATICFILES_DIRS = [BASE_DIR /'static'] 
 
-CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST', default=[])
+# フロントエンドからのアクセスを許可するためのホワイトリスト
+CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST', default=[]) # 追記 パッケージの適用
 
+# アクセス制限の適用
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -128,11 +131,13 @@ REST_FRAMEWORK = {
     ],
 }
 
+# 認証トークンに使用するJWTの設定
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1440)
 }
 
+# ユーザーモデルの設定
 AUTH_USER_MODEL = 'base.User'
 
 # stripe

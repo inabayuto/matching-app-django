@@ -20,9 +20,9 @@ class Matching(models.Model):
         related_name='approached_user',
     )
     # マッチングが承認されたかどうか
-    approved = models.BooleanField(verbose_name='マッチング許可', default=False)
+    approved = models.BooleanField(verbose_name='マッチング許可', default=False) # マッチング許可の有無
     # レコード作成日時（自動記録）
-    created_at = models.DateTimeField(verbose_name='登録日時', auto_now_add=True)
+    created_at = models.DateTimeField(verbose_name='登録日時', auto_now_add=True) # 登録日時
 
     class Meta:
         # approaching, approached の組み合わせは一意（重複禁止）
